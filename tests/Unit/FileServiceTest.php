@@ -46,10 +46,6 @@ class FileServiceTest extends TestCase
         $response = $this->service->downloadFile($model->id);
 
         $this->assertEquals(200, $response->getStatusCode());
-
-        $user2 = User::factory()->create();
-
-        $service2 = new FileService($user2);
     }
 
     public function test_exception_is_thrown_for_unauthorized_access()
@@ -68,5 +64,16 @@ class FileServiceTest extends TestCase
         $this->expectException(FileNotFoundException::class);
 
         $this->service->downloadFile(-1);
+    }
+
+    public function test_rename_file()
+    {
+        $model = $this->service->saveFile($this->fileName, $this->exampleFile);
+
+        $newFileName = "And also with you.";
+        $this->service->rename($model->id, $newFileName);
+
+        $dbModel = \App\Models\File::findOrFail($model->id);
+        $this->assertEquals($newFileName, $dbModel->name);
     }
 }

@@ -33,6 +33,26 @@ class FileService
 
     public function downloadFile($fileId)
     {
+        $model = $this->getFile($fileId);
+
+        return Storage::download($model->path, $model->name . $model->extension);
+    }
+
+    public function rename($fileId, $newName)
+    {
+        $model = $this->getFile($fileId);
+
+        $model->name = $newName;
+        $model->save();
+    }
+
+    public function getBasePath()
+    {
+        return "user_{$this->user->id}";
+    }
+
+    private function getFile($fileId)
+    {
         $model = File::find($fileId);
 
         if ($model === null) {
@@ -40,14 +60,9 @@ class FileService
         }
 
         if ($model->user->id !== $this->user->id) {
-            throw new FileNotFoundException("Unauthourized access");
+            throw new FileNotFoundException("Unauthorized access");
         }
 
-        return Storage::download($model->path, $model->name . $model->extension);
-    }
-
-    public function getBasePath()
-    {
-        return "user_{$this->user->id}";
+        return $model;
     }
 }
