@@ -17,6 +17,7 @@ class AddsBasicFile extends Migration
             $table->bigIncrements('id')->unsigned();
             $table->string('name')->unique();
             $table->string('extension');
+            $table->string('path');
             $table->integer('size');
             $table->bigInteger('user_id')->unsigned();
             $table->timestamps();
