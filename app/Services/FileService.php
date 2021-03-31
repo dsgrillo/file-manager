@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\File;
 use App\Models\User;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 class FileService
@@ -16,7 +17,7 @@ class FileService
         $this->user = $user;
     }
 
-    public function saveFile($fileName, \Illuminate\Http\File $fileUploaded)
+    public function saveFile($fileName, UploadedFile $fileUploaded)
     {
         $originalPath = Storage::put($this->getBasePath(), $fileUploaded);
 
@@ -49,6 +50,14 @@ class FileService
     public function getAll()
     {
         return File::where('user_id', $this->user->id)->paginate();
+    }
+
+    public function delete($fileId)
+    {
+        $model = $this->getFile($fileId);
+
+        Storage::delete($model->path);
+        $model->delete();
     }
 
     public function getBasePath()

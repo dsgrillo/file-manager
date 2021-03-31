@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Services\FileService;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\File;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
@@ -24,7 +24,7 @@ class FileServiceTest extends TestCase
         parent::setUp();
         Storage::fake();
         $this->service = new FileService($this->user);
-        $this->exampleFile = new File(resource_path('files/baby-yoda.jpg'));
+        $this->exampleFile = new UploadedFile(resource_path('files/baby-yoda.jpg'), 'baby-yoda.jpg');
         $this->fileName = "May the force be with you.";
     }
 

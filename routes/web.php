@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use \App\Http\Controllers\FileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,8 +17,7 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => '/app', 'middleware' => 'auth'], function () {
-    Route::get('/list', [FileController::class, 'listFiles'])->name('file.list');
-    Route::post('/new', [FileController::class, 'newFile'])->name('file.new');
+    Route::get('/files', \App\Http\Livewire\ShowFiles::class)->name('file');
 });
 
 Route::get('/dashboard', function () {
