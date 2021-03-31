@@ -46,6 +46,11 @@ class FileService
         $model->save();
     }
 
+    public function getAll()
+    {
+        return File::where('user_id', $this->user->id)->paginate();
+    }
+
     public function getBasePath()
     {
         return "user_{$this->user->id}";

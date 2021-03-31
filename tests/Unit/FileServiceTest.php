@@ -76,4 +76,13 @@ class FileServiceTest extends TestCase
         $dbModel = \App\Models\File::findOrFail($model->id);
         $this->assertEquals($newFileName, $dbModel->name);
     }
+
+    public function test_get_all()
+    {
+        $this->service->saveFile($this->fileName, $this->exampleFile);
+        $this->service->saveFile('And alos with you.', $this->exampleFile);
+
+        $savedFiles = $this->service->getAll();
+        $this->assertCount(2, $savedFiles);
+    }
 }
