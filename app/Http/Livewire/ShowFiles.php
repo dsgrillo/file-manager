@@ -5,7 +5,6 @@ namespace App\Http\Livewire;
 use App\Services\FileService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
-use Livewire\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
 
 class ShowFiles extends Component
@@ -14,10 +13,8 @@ class ShowFiles extends Component
 
     public $isOpen = false;
     public $fileName;
-    /**
-     * @var TemporaryUploadedFile
-     */
     public $file;
+    public $iteration = 0;
 
     private function service()
     {
@@ -38,11 +35,18 @@ class ShowFiles extends Component
     {
         $this->validate([
             'fileName' => 'required|max:255',
-            'file' => 'max:80192', // 8MB Max
+            'file' => 'required|max:8192'
         ]);
 
         $this->service()->saveFile($this->fileName, $this->file);
         $this->closeModal();
+    }
+
+    private function clearInputs()
+    {
+        $this->file = null;
+        $this->fileName = null;
+        $this->iteration++;
     }
 
     public function create()
@@ -63,5 +67,6 @@ class ShowFiles extends Component
     public function closeModal()
     {
         $this->isOpen = false;
+        $this->clearInputs();
     }
 }

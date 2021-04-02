@@ -1,6 +1,6 @@
 <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        {{ __('Files') }}
+        {{ __('File Manager') }}
     </h2>
 </x-slot>
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -30,14 +30,14 @@
                             {{ __('File Name') }}
                         </th>
                         <th
-                            class="px-3 py-3 border-b-2 border-black bg-black text-left text-xs font-semibold text-white uppercase tracking-wider">
+                            class="px-3 py-3 border-b-2 border-black bg-black text-center text-xs font-semibold text-white uppercase tracking-wider">
                             {{__('Type')}}
                         </th>
-                        <th class="px-3 py-3 border-b-2 border-black bg-black text-left text-xs font-semibold text-white uppercase tracking-wider">
+                        <th class="px-3 py-3 border-b-2 border-black bg-black text-center text-xs font-semibold text-white uppercase tracking-wider">
                             {{__('Size')}}
                         </th>
                         <th
-                            class="px-3 py-3 border-b-2 border-black bg-black text-left text-xs font-semibold text-white uppercase tracking-wider">
+                            class="px-3 py-3 border-b-2 border-black bg-black tracking-wider">
                         </th>
                     </tr>
                     </thead>
@@ -47,10 +47,10 @@
                             <td class="px-3 py-3 bg-white text-sm @if (!$loop->last) border-gray-200 border-b @endif">
                                 {{ $file->name }}
                             </td>
-                            <td class="px-3 py-3 bg-white text-sm @if (!$loop->last) border-gray-200 border-b @endif">
+                            <td class="text-center px-3 py-3 bg-white text-sm @if (!$loop->last) border-gray-200 border-b @endif">
                                 {{ $file->extension }}
                             </td>
-                            <td class="px-3 py-3 bg-white text-sm @if (!$loop->last) border-gray-200 border-b @endif">
+                            <td class="text-right px-3 py-3 bg-white text-sm @if (!$loop->last) border-gray-200 border-b @endif">
                                 {{ $file->sizeUnit }}
                             </td>
                             <td class="px-3 py-3 bg-white text-sm @if (!$loop->last) border-gray-200 border-b @endif text-right">
@@ -67,6 +67,7 @@
                     </tbody>
                 </table>
             </div>
+            {{ $files->links() }}
         </div>
     @endif
     @if($isOpen)
@@ -88,22 +89,32 @@
                                             @error('fileName') <span class="text-red-500">{{ $message }}</span>@enderror
                                         </div>
                                         <div class="w-full px-3 mb-6">
-                                            <label for="file"
+                                            <label for="file{{$iteration}}"
                                                    class="block text-gray-700 text-sm font-bold mb-2">File:</label>
-                                            <input type="file"
-                                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                                   id="file" wire:model="file">
+
+                                            <div class="">
+                                                <label class="w-64 flex flex-col items-center px-4 py-6 bg-white rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer bg-blue-500 hover:bg-blue-700 text-white">
+                                                    <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                        <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                                                    </svg>
+                                                    <span class="mt-2 text-base leading-normal">Select a file</span>
+                                                    <input type="file" class="hidden" id="file{{$iteration}}" wire:model="file">
+                                                </label>
+                                            </div>
+
                                             @error('file') <span class="text-red-500">{{ $message }}</span>@enderror
+
+{{--                                            <div wire:loading wire:target="file">Uploading...</div>--}}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="px-4 py-3 sm:px-6 flex-reverse">
                                     <button type="submit"
-                                            class="mx-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                         Save
                                     </button>
                                     <button wire:click="closeModal()" type="button"
-                                            class="bg-white hover:bg-gray-200 border border-gray-300 text-gray-500 font-bold py-2 px-4 rounded">
+                                            class="mx-3 bg-white hover:bg-gray-200 border border-gray-300 text-gray-500 font-bold py-2 px-4 rounded">
                                         Cancel
                                     </button>
                                 </div>
