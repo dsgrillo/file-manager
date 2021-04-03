@@ -18,6 +18,7 @@ Route::get('/', function () {
 
 Route::group(['prefix' => '/app', 'middleware' => 'auth'], function () {
     Route::get('/files', \App\Http\Livewire\ShowFiles::class)->name('file');
+    Route::get('/upload', \App\Http\Livewire\UploadFile::class)->name('file.upload');
 });
 
 Route::get('/dashboard', function () {

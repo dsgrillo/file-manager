@@ -49,7 +49,7 @@ class FileService
 
     public function getAll()
     {
-        return File::where('user_id', $this->user->id)->paginate();
+        return File::where('user_id', $this->user->id)->paginate(10);
     }
 
     public function delete($fileId)

@@ -2,25 +2,14 @@
 
 namespace App\Http\Livewire;
 
-use App\Services\FileService;
-use Illuminate\Support\Facades\Auth;
-use Livewire\Component;
-use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
-class ShowFiles extends Component
+class ShowFiles extends BaseComponent
 {
-    use WithFileUploads, WithPagination;
+    use WithPagination;
 
-    public $isOpen = false;
     public $fileName;
     public $file;
-    public $iteration = 0;
-
-    private function service()
-    {
-        return new FileService(Auth::user());
-    }
 
     public function render()
     {
@@ -40,34 +29,10 @@ class ShowFiles extends Component
         ]);
 
         $this->service()->saveFile($this->fileName, $this->file);
-        $this->closeModal();
-    }
-
-    private function clearInputs()
-    {
-        $this->file = null;
-        $this->fileName = null;
-        $this->iteration++;
-    }
-
-    public function create()
-    {
-        $this->openModal();
     }
 
     public function delete($id)
     {
         $this->service()->delete($id);
-    }
-
-    public function openModal()
-    {
-        $this->isOpen = true;
-    }
-
-    public function closeModal()
-    {
-        $this->isOpen = false;
-        $this->clearInputs();
     }
 }

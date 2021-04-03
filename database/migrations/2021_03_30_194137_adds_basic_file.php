@@ -15,7 +15,7 @@ class AddsBasicFile extends Migration
     {
         Schema::create('files', function (Blueprint $table) {
             $table->bigIncrements('id')->unsigned();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('extension');
             $table->string('path');
             $table->integer('size');

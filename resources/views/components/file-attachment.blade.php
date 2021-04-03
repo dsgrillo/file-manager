@@ -13,7 +13,7 @@
 	    const file = this.$refs.input.files[0];
 
 	    if (file.size > {{ $maxFileSize }}) {
-	        this.clientError = 'File size exceeds maximum limit of ' + formatByte({{$maxFileSize}});
+	        this.clientError = `${file.name} (${formatByte(file.size)}) exceeds maximum limit of ` + formatByte({{$maxFileSize}});
 	        console.warn('file size exceeds', this.clientError);
 	    } else {
 	        this.clientError = false;
@@ -25,8 +25,7 @@
             });
         }
 	}
-}"
-     x-cloak>
+}">
     @if(!$file)
         @php $randomId = Str::random(6); @endphp
         <label for="file-{{ $randomId }}" class="relative block leading-tight bg-white hover:bg-gray-100 cursor-pointer inline-flex items-center transition duration-500 ease-in-out group overflow-hidden
@@ -69,7 +68,7 @@
             <div class="flex items-center justify-center flex-1 px-4 py-2" wire:loading.class="hidden" wire:target="{{ $attributes->wire('model')->value }}">
                 @if($slot->isEmpty())
                     <svg class="h-8 w-8 text-gray-300 group-hover:text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><path d="M168.001,100.00017v.00341a12.00175,12.00175,0,1,1,0-.00341ZM232,56V200a16.01835,16.01835,0,0,1-16,16H40a16.01835,16.01835,0,0,1-16-16V56A16.01835,16.01835,0,0,1,40,40H216A16.01835,16.01835,0,0,1,232,56Zm-15.9917,108.6936L216,56H40v92.68575L76.68652,112.0002a16.01892,16.01892,0,0,1,22.62793,0L144.001,156.68685l20.68554-20.68658a16.01891,16.01891,0,0,1,22.62793,0Z"></path></svg>
-                    <span class="ml-2 text-gray-600">{{ is_array($file) ? 'Browse files' : 'Browse file' }} | <span class="text-sm">PNG or JPEG</span></span>
+                    <span class="ml-2 text-gray-600">{{ is_array($file) ? 'Browse files' : 'Browse file' }} </span>
                 @else
                     {{ $slot }}
                 @endif
@@ -84,7 +83,8 @@
         </div>
     </div>
 
-    <div class="text-sm text-red-500 bg-red-100 flex-1 p-1 text-center rounded my-2" x-show="clientError" x-text="clientError"></div>
+    <div class="text-sm text-red-500 bg-red-100 flex-1 p-1 text-center rounded my-2"
+         x-show="clientError" x-text="clientError" x-cloak></div>
 
     <div>
         @if(is_array($file) && count($file) > 0)
@@ -138,11 +138,6 @@
                         @endif
                     </div>
                     <div>
-
-                        @error($attributes->wire('model')->value)
-                        <p class="text-sm text-red-600 mb-2">{{ $message }}</p>
-                        @enderror
-
                         <div class="text-sm font-medium truncate w-40 md:w-auto">{{ $file->getClientOriginalName() }}</div>
                         <div class="flex items-center space-x-1">
                             <div class="text-xs text-gray-500">{{ Formatter::bytesToHuman($file->getSize()) }}</div>
