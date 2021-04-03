@@ -8,8 +8,8 @@ class ShowFiles extends BaseComponent
 {
     use WithPagination;
 
-    public $fileName;
-    public $file;
+    public $isUpdating;
+    public $name;
 
     public function render()
     {
@@ -21,18 +21,40 @@ class ShowFiles extends BaseComponent
         );
     }
 
-    public function save()
+    public function download($id)
     {
-        $this->validate([
-            'fileName' => 'required|max:255',
-            'file' => 'required|max:8192'
-        ]);
-
-        $this->service()->saveFile($this->fileName, $this->file);
+        return $this->service()->downloadFile($id);
     }
 
     public function delete($id)
     {
         $this->service()->delete($id);
+    }
+
+    public function setIsUpdating($id, $name)
+    {
+        $this->cancelUpdate();
+
+        $this->isUpdating = $id;
+        $this->name = $name;
+    }
+
+    public function updateName($id)
+    {
+        $this->validate([
+            'name' => $this->nameRule($id)
+        ]);
+
+        $this->service()->rename($id, $this->name);
+        $this->cancelUpdate();
+    }
+
+    public function cancelUpdate()
+    {
+        $this->name = false;
+        $this->isUpdating = false;
+
+        $this->resetErrorBag();
+        $this->resetValidation();
     }
 }

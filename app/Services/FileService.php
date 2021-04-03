@@ -36,7 +36,7 @@ class FileService
     {
         $model = $this->getFile($fileId);
 
-        return Storage::download($model->path, $model->name . $model->extension);
+        return Storage::download($model->path, "{$model->name}.{$model->extension}");
     }
 
     public function rename($fileId, $newName)

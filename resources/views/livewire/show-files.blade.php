@@ -7,7 +7,7 @@
         </x-alert>
     @endif
 
-    <div class="my-3">
+    <div class="my-3 text-right">
         <x-button-link href="{{route('file.upload')}}" >Upload new file</x-button-link>
     </div>
 
@@ -36,7 +36,16 @@
                 @foreach($files as $file)
                     <tr>
                         <td class="px-3 py-3 bg-white text-sm @if (!$loop->last) border-gray-200 border-b @endif">
-                            {{ $file->name }}
+                            @if ($isUpdating === $file->id)
+                                <x-input type="text" class="w-full" wire:model="name" ></x-input>
+
+                                @error('name') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                            @else
+                            <a class="inline-flex items-center underline text-blue-500" href="#!" wire:click="download({{ $file->id }})">
+                                <svg class="w-3 h-3 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
+                                <span>{{ $file->name }}</span>
+                            </a>
+                            @endif
                         </td>
                         <td class="text-center px-3 py-3 bg-white text-sm @if (!$loop->last) border-gray-200 border-b @endif">
                             {{ $file->extension }}
@@ -46,11 +55,21 @@
                         </td>
                         <td class="px-3 py-3 bg-white text-sm @if (!$loop->last) border-gray-200 border-b @endif text-right">
                             <div class="inline-block whitespace-no-wrap">
-                                <button
-                                    wire:click="$emit('triggerDelete',{id: {{ $file->id }}, name: '{{ addslashes($file->name) }}'})"
-                                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                                    Delete
-                                </button>
+                                @if ($isUpdating === $file->id)
+                                    <x-button wire:click="updateName({{$file->id}})" class="bg-green-500 hover:bg-green-700">Save</x-button>
+                                    <x-button wire:click="cancelUpdate()">Cancel</x-button>
+                                @else
+                                    <x-button wire:click="setIsUpdating({{$file->id}}, '{{addslashes($file->name)}}')" class="bg-blue-500 hover:bg-blue-700" >
+                                        Update
+                                    </x-button>
+
+                                    <x-button
+                                        class="bg-red-500 hover:bg-red-700"
+                                        wire:click="$emit('triggerDelete',{id: {{ $file->id }}, name: '{{ addslashes($file->name) }}'})"
+                                    >
+                                        Delete
+                                    </x-button>
+                                @endif
                             </div>
                         </td>
                     </tr>
@@ -74,11 +93,10 @@
         @this.on('triggerDelete', ({id, name}) => {
             Swal.fire({
                 title: 'Are You Sure?',
-                text: `The file ${name} will be permanently deleted!`,
+                text: `The file "${name}" will be permanently deleted!`,
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
                 confirmButtonText: 'Delete!'
             }).then((result) => {
                 if (result.value) {

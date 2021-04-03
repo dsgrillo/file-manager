@@ -41,13 +41,7 @@ class UploadFile extends BaseComponent
     private function rules()
     {
         return [
-            'name' => [
-                'required',
-                'max:255',
-                Rule::unique('files')->where(function ($query) {
-                    return $query->where('user_id', Auth::user()->id);
-                }),
-            ],
+            'name' => $this->nameRule(),
             'file' => 'required|max:8192', // 8MB Max
         ];
     }
