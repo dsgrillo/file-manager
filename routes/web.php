@@ -21,7 +21,7 @@ Route::group(['prefix' => '/app', 'middleware' => 'auth'], function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return redirect()->route('file');
 })->middleware(['auth'])->name('dashboard');
 
 

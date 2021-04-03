@@ -6,10 +6,11 @@ use App\Services\FileService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class ShowFiles extends Component
 {
-    use WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public $isOpen = false;
     public $fileName;
