@@ -49,7 +49,11 @@ To get a local copy up and running follow these steps.
    ```sh
    git clone https://github.com/dsgrillo/file-manager
    ```
-2. Install composer dependencies
+2. Create an .env file
+   ```sh
+   cp .env.example .env
+   ```
+3. Install composer dependencies
    ```sh
    docker run --rm \
        -u "$(id -u):$(id -g)" \
@@ -58,13 +62,13 @@ To get a local copy up and running follow these steps.
        laravelsail/php80-composer:latest \
        composer install
    ```
-3. Start the container
+4. Start the container
    ```ssh
    ./vendor/bin/sail up -d
    ```
 4. Setup the database
    ```sh
-   sail artisan migrate
+   ./vendor/bin/sail artisan migrate
    ```
 5. Navigate to [localhost](http://localhost)
 
