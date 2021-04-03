@@ -31,9 +31,10 @@
 
 ### Built With
 
-* [Tailwind](https://tailwindcss.com/)
+* [Tailwind](https://tailwindcss.com)
 * [AlpineJS](https://github.com/alpinejs/alpine)
 * [Laravel](https://laravel.com)
+* [Livewire](https://laravel-livewire.com)
 
 
 
@@ -66,11 +67,12 @@ To get a local copy up and running follow these steps.
    ```ssh
    ./vendor/bin/sail up -d
    ```
-4. Setup the database
+5. Setup the database and APP_KEY
    ```sh
    ./vendor/bin/sail artisan migrate
+   ./vendor/bin/sail artisan key:generate 
    ```
-5. Navigate to [localhost](http://localhost)
+6. Navigate to [localhost](http://localhost)
 
 <!-- LICENSE -->
 ## License
