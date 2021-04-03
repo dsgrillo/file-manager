@@ -1,6 +1,5 @@
-@props(['color'])
 @php $randomId = Str::random(6); @endphp
-<div id="alert-{{$randomId}}" {{ $attributes->merge(['class' => "bg-$color-100 border-l-4 border-$color-500 text-$color-700 p-4 relative"]) }} role="alert">
+<div id="alert-{{$randomId}}" {{ $attributes->merge(['class' => "bg-green-100 border-l-4 border-green-500 text-green-700 p-4 relative"]) }} role="alert">
     <p class="font-bold">{{$title}}</p>
     <p>{{ $slot }}</p>
     <button

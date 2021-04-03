@@ -1,7 +1,7 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
     @if (session()->has('message'))
-        <x-alert class="mt-3" color="green">
+        <x-alert class="mt-3">
             <x-slot name="title">Success</x-slot>
             {{session('message')}}
         </x-alert>
